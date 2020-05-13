@@ -3,16 +3,24 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^5.12.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "axios": "^0.19.2",
+    "history": "^4.10.1",
+    "prop-types": "^15.7.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
+    "react-helmet": "^5.2.1",
+    "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.0"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build:css": "postcss src/css/index.css -o src/css/tailwind.css",
+    "watch:css": "postcss src/css/index.css -o src/css/tailwind.css -w",
+    "start": "concurrently \"npm run watch:css\" \"react-scripts start\"",
+    "build": "npm run build:css && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -30,5 +38,11 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^9.7.4",
+    "concurrently": "^5.1.0",
+    "postcss-cli": "^7.1.0",
+    "tailwindcss": "^1.2.0"
   }
 }

@@ -1,26 +1,39 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { lazy, Suspense } from 'react';
+import { Router, Route, Switch, Redirect } from 'react-router-dom';
 
-function App() {
+// Styles
+import './css/tailwind.css';
+
+// Helpers
+import { history } from './helpers/history';
+
+// Components/Containers
+import PageLoader from './components/PageLoader';
+
+// String constants
+import ROUTES from './constants/routes';
+
+// Components/Containers (LAZY)
+const Home = lazy(() => import('./components/Home'));
+const SearchContainer = lazy(() => import('./containers/SearchContainer'));
+const ResultsContainer = lazy(() => import('./containers/ResultsContainer'));
+const About = lazy(() => import('./components/About'));
+const PageNotFound = lazy(() => import('./components/PageNotFound'));
+
+export default props => {
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
-
-export default App;
+    <Suspense fallback={<PageLoader />}>
+      <Router history={history}>
+        <Switch>
+          <Route exact path={ROUTES.HOME} component={Home} />
+          <Route path={ROUTES.ABOUT} component={About} />
+          <Route path={ROUTES.SEARCH} component={SearchContainer} />
+          <Route path={ROUTES.RESULTS} component={ResultsContainer} />
+          <Route path={ROUTES.NOT_FOUND} component={PageNotFound} />
+          <Redirect to={ROUTES.NOT_FOUND} />
+        </Switch>
+      </Router>
+    </Suspense>
+  )
+};
